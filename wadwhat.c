@@ -2,8 +2,13 @@
  * WADWHAT.C - print the contents of a DOOM WAD file
  *
  * by Randall R. Spangler
+ * Modified for Doom II by Gregory Kwok
  *
- * Version 1.1, released 8/28/94
+ * Version 1.1, released   08/28/94
+ * Version 2.0, programmed 11/26/95
+ * Version 2.1, updated    09/21/96
+ * Version 2.2, updated    09/29/96
+ * Version 2.3, updated    02/16/98
  *
  */
 
@@ -278,18 +283,28 @@ int         countthings(void)
     prtth(3003, "Baron");
     prtth(16, "Cyberdemon");
     prtth(7, "Spiderdemon");
+     prtth(88, "Final Boss");
 
     printf("    Monsters:\n");
     prtth(3004, "Trooper");
     prtth(9, "Sergeant");
+     prtth(65, "Chaingun guy");
+     prtth(84, "SS Nazi");
     prtth(3001, "Imp");
     prtth(3002, "Demon");
     prtth(58, "Spectre");
     prtth(3006, "Lost soul");
     prtth(3005, "Cacodemon");
+     prtth(64, "Archvile");
+     prtth(66, "Revenant");
+     prtth(67, "Mancubis");
+     prtth(68, "Arachnotron");
+     prtth(69, "Mini Baron");
+     prtth(71, "Pain Elemental");
 
     printf("    Weapons:\n");
     prtth(2001, "Shotgun");
+     prtth(82, "Super shotgun");
     prtth(2002, "Chaingun");
     prtth(2003, "Rocket launcher");
     prtth(2004, "Plasma gun");
@@ -319,6 +334,7 @@ int         countthings(void)
 
     RESET(nc);
     addcountweighted(2001, nc, 8);      /* Shotguns */
+     addcountweighted(82, nc, 16);       /* Super shotguns */
     addcountweighted(2008, nc, 4);      /* Shells */
     addcountweighted(2049, nc, 20);     /* Boxes of shells */
     addcountweighted(8, nc, 4);         /* Backpacks */
@@ -349,6 +365,7 @@ int         countthings(void)
     RESET(nc);
     addcountweighted(2018, nc, 100);    /* Armor */
     addcountweighted(2019, nc, 200);    /* Super armor */
+     addcountweighted(83, nc, 200);      /* Megasphere */
     addcountweighted(2015, nc, 1);      /* Armor bonuses */
     PRINTITEM2("Armor points", nc);
 
@@ -356,6 +373,7 @@ int         countthings(void)
     addcountweighted(2011, nc, 10);     /* Stimpacks */
     addcountweighted(2012, nc, 25);     /* Medikits */
     addcountweighted(2013, nc, 100);    /* Soul spheres */
+     addcountweighted(83, nc, 200);      /* Megasphere */
     addcountweighted(2023, nc, 100);    /* Berserk strength */
     addcountweighted(2014, nc, 1);      /* Health bonuses */
     PRINTITEM2("Health points", nc);
@@ -378,14 +396,22 @@ int         countthings(void)
     addcountweighted(3003, nc, 100);    /* Barons */
     addcountweighted(16, nc, 400);      /* Cyberdemons */
     addcountweighted(7, nc, 300);       /* Spiderdemons */
+     addcountweighted(64, nc, 70);       /* Archviles */
+     addcountweighted(65, nc, 7);        /* Chaingun guys */
+     addcountweighted(66, nc, 30);       /* Revenants */
+     addcountweighted(67, nc, 40);       /* Mancubi */
+     addcountweighted(68, nc, 50);       /* Arachnotrae */
+     addcountweighted(69, nc, 50);       /* Mini Barons */
+     addcountweighted(71, nc, 40);       /* Pain Elementals */
+     addcountweighted(84, nc, 5);        /* SS Nazis */
+     addcountweighted(88, nc, 25);       /* Final bosses */
     PRINTITEM("Total monster hp", nc);
     PRINTITEM2("Max ammo damage", wdam);
 
-    for (i = 0; i < 6; i++)
-    {
+    for (i = 0; i < 6; i++) {
         if (!wdam[i])
             continue;
-        dratio[i] = (wdam[i] ? ((float) nc[i] / (float) wdam[i]) : 0);    /* Prevent
+        dratio[i] = (wdam[i] ? (float) nc[i] / (float) wdam[i] : 0);    /* Prevent
                                                                          * divide-by-zero */
     }
     printf("\t%-20s %0.3f %0.3f %0.3f %0.3f", "RATIO", 0.5 * dratio[0], dratio[0], dratio[1], dratio[2]);
@@ -426,7 +452,7 @@ int         countbriefly(void)
         if (countth(i, -1))
             n++;
     }
-    printf("  %d %2ld  ", n, countth(0x11, -1));        /* Find deathmatch
+    printf("%d%X ", n, countth(11, -1));        /* Find deathmatch
                                                          * starts */
 
     /*** Monsters ***/
@@ -435,29 +461,37 @@ int         countbriefly(void)
     PRB2(3003);
     PRB1(16);
     PRB1(7);
+     PRB1(88);
 
     /* Monsters */
-    printf(" ");
     PRB2(3004);
     PRB2(9);
+     PRB2(65);
+     PRB2(84);
     PRB2(3001);
     PRB2(3002);
     PRB2(58);
     PRB2(3006);
     PRB2(3005);
+     PRB2(64);
+     PRB2(66);
+     PRB2(67);
+     PRB2(68);
+     PRB2(69);
+     PRB2(71);
 
     /* Weapons */
-    putchar(' ');
     PRB0(2005, '1');
     putchar('2');
     PRB0(2001, '3');
+     PRB0(82, '#');
     PRB0(2002, '4');
     PRB0(2003, '5');
     PRB0(2004, '6');
     PRB0(2006, '7');
 
     /* Equipment */
-    printf("  ");
+    putchar(' ');
     PRB0(8, 'B');
     PRB0(2022, 'V');
     PRB0(2023, 'S');
@@ -473,7 +507,8 @@ int         countbriefly(void)
     l = 20 * COB(2002) + 10 * COB(2007) + 50 * COB(2048) + 10 * COB(8) + 5 * COB(3004);
     wdam += l;                          /* Bullets */
 
-    l = 8 * COB(2001) + 4 * COB(2008) + 20 * COB(2049) + 4 * COB(8) + 4 * COB(9);
+    l = 8 * COB(2001) + 4 * COB(2008) + 20 * COB(2049) + 4 * COB(8) + 4 * COB(9)
+     + 16 * COB(82);
     wdam += 7 * l;                      /* Shells */
 
     l = 2 * COB(2003) + COB(2010) + 5 * COB(2046) + COB(8);
@@ -485,7 +520,9 @@ int         countbriefly(void)
     /** Monster hit points **/
 
     mhp = 2 * COB(3004) + 3 * COB(9) + 6 * COB(3001) + 15 * COB(3002) + 15 * COB(58)
-          + 10 * COB(3006) + 40 * COB(3005) + 100 * COB(3003) + 400 * COB(16) + 300 * COB(7);
+          + 10 * COB(3006) + 40 * COB(3005) + 100 * COB(3003) + 400 * COB(16) + 300 * COB(7)
+           + 70 * COB(64) + 7 * COB(65) + 30 * COB(66) + 60 * COB(67) + 50 * COB(68) + 50 * COB(69)
+           + 40 * COB(71) + 5 * COB(84) + 25 * COB(88);
 
     dratio = (wdam ? (float) mhp / (float) wdam : 0);   /* Make sure we don't
                                                          * divide by zero */
@@ -493,7 +530,7 @@ int         countbriefly(void)
         dratio *= 0.5;                  /* Twice as much ammo in easiest
                                          * level */
 
-    printf("  %0.3f\n", dratio);
+    printf(" %0.3f\n", dratio);
 
     /*** Return success ***/
 
@@ -645,8 +682,8 @@ int         handlepwad(char *fname)
 
     long        eoffs, elen;    /* Offset and length of a directory entry */
     char        ename[9] = "entrynam";  /* Name of the entry */
-    int         episode = 0, mission = 0;       /* Current episode and
-                                                 * mission */
+    int         mission = 0;                    /* Current mission */
+
     FILE       *f;
     int         i, j;
 
@@ -671,7 +708,6 @@ int         handlepwad(char *fname)
     }
 
     if (!isbrief) {                     /* Start a new filename in the output */
-        printf("==============================================================================\n");
         printf("%cWAD FILE %s:\n", (ispwad ? 'P' : 'I'), fname);
     }
     fread(&ndirent, sizeof(long), 1, f);/* Number of entries in WAD dir */
@@ -709,7 +745,7 @@ int         handlepwad(char *fname)
             /** Reset status **/
 
             thlen = ldlen = selen = rjlen = 0;
-            episode = mission = 0;      /* No longer in a level */
+            mission = 0;                /* No longer in a level */
             break;
 
           case 0:                       /* THINGS */
@@ -732,17 +768,14 @@ int         handlepwad(char *fname)
 
         /** Keep track of which mission we're looking at **/
 
-        if (ename[0] == 'E' && isdigit(ename[1]) && ename[2] == 'M' &&
-            isdigit(ename[3]) && ename[4] == '\0') {
-            episode = ename[1] - '0';
-            mission = ename[3] - '0';
+        if (ename[0] == 'M' && ename[1] == 'A' && ename[2] == 'P' &&
+        isdigit(ename[3]) && isdigit(ename[4]) && ename[5] == '\0') {
+            mission = atoi(ename + 3);
 
-            if (isbrief) {              /* One-line output */
-                printf("%-12.12s E%dM%d", fname, episode, mission);
-            } else {                    /* Verbose output */
-                printf("------------------------------------------------------------------------------\n");
-                printf("EPISODE %d MISSION %d             S1    S2    S3   S45 |    M1    M2    M3   M45\n", episode, mission);
-                printf("------------------------------------------------------------------------------\n");
+            if (!isbrief) {
+                printf("-------------------------------------------------------------------------------\n");
+                printf("MAP %02d              Difficulty: S1    S2    S3   S45 |    M1    M2    M3   M45\n", mission);
+                printf("-------------------------------------------------------------------------------\n");
             }
         }
     }
@@ -770,13 +803,16 @@ int         main(int argc, char *argv[])
 
     /*** Make sure we've been given a filename ***/
 
-    printf("WADWHAT 1.1 by Randall R. Spangler (rspangle@micro.caltech.edu)\n");
+    putchar('\n');
+    printf("WADWHAT 2.3 by Gregory P. Kwok (gkwok@jps.net)\n");
+    printf("Based on WADWHAT 1.1 by Randall R. Spangler (rspangle@micro.caltech.edu)\n");
+    printf("===============================================================================\n");
 
     if (argc < 2) {
-        printf("Prints the contents of a WAD file or files.\n");
-        printf("Usage:\n\twadwhat [-Bn[M]] file1 [file2 ...]\n");
-        printf("\n\t\t-Bn\tbrief contents at skill level n\n");
-        printf("\t\t-BnM\tbrief contents at skill level n, multiplayer\n");
+        printf("Prints the contents of a WAD file.\n");
+        printf("Usage:\n\twadwhat [/Bn[M]] file1\n");
+        printf("\n\t\t/Bn\tbrief contents at skill level n\n");
+        printf("\t\t/BnM\tbrief contents at skill level n, multiplayer\n");
         return 1;
     }
     /*** Match all wildcards ***/
@@ -785,10 +821,10 @@ int         main(int argc, char *argv[])
 
         /** See if we're an option **/
 
-        if (!strnicmp(argv[i], "-B", 2)) {      /* Print briefly */
+        if (!strnicmp(argv[i], "/B", 2)) {      /* Print briefly */
             isbrief = atoi(argv[i] + 2);/* Extract skill level */
-            printf("File         Map   Play  Bosses  Monsters              Weapons  Equip    RATIO\n");
-            printf("-------------------c-de--ba-c-s--tr-se-im-de-sp-lo-ca--cpscrpb--bvsiral-------\n");
+            printf("St Bosses   Monsters                                     Weapons  Equip   RATIO\n");
+            printf("cd ba-c-s-f tr-se-ch-ss-im-de-sp-ls-ca-av-re-ma-ar-mb-pe cps2crpb bvsiral -----\n");
             battr = battrarry[isbrief - 1];     /* Matching attributes for
                                                  * brief printout */
             if (toupper(argv[i][3]) == 'M')
@@ -796,17 +832,8 @@ int         main(int argc, char *argv[])
 
             continue;
         }
-        /** Make sure at least one matching file exists **/
-
-        if (findfirst(argv[i], &ff, FA_ARCH)) { /* No match for wildcard */
-            fprintf(stderr, "Can't find file matching %s\n", argv[i]);
-            continue;
-        }
-        /** Handle all the matching files **/
-
-        do {
-            handlepwad(ff.ff_name);
-        } while (!findnext(&ff));
+        else
+          handlepwad(argv[i]);
     }
 
     /*** Return success ***/
