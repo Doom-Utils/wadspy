@@ -1,0 +1,281 @@
+                                     WADWHAT
+               by Randall R. Spangler (rspangle@micro.caltech.edu)
+                              version 1.1 - 8/28/94
+
+
+1.   Introduction
+
+Have you ever downloaded a WAD file and wondered which maps it
+replaced?  Have you ever wondered if the map you're about to start
+contains 10 cyberdemons?  And how much ammo can you afford to waste in
+the map, anyway?
+
+If you've had any of these questions, then WADWHAT is for you.
+WADWHAT provides simple, easy-to-read numbers on the contents of any
+WAD file.  Some nifty features:
+
+*    Prints which maps are contained in the WAD
+*    Tells whether a map can be used single-player, cooperative, or
+     deathmatch (and prints the number of deathmatch starts)
+*    Lists things present in each map at each skill level
+     *    Bosses (Barons, Cyberdemons, Spiderdemons)
+     *    Monsters
+     *    Weapons
+     *    Items
+     *    Ammo
+     *    Total healing and armor
+*    Calculates a difficulty rating for each map based on the ratio of
+     monsters to ammo
+*    Calculates an average brightness of the level - how well lit it
+     is
+*    Prints the number of secrets, triggers, and sectors with nukeage
+     floors
+*    FREE
+
+What's new in version 1.1:
+
+*    Fixed count of light amp goggles
+*    Total damage and monster hit points can be >65000 now
+*    Fixed divide-by-zero errors if there was no additional ammo in
+the level
+*    Prints average light level (not counting blinking lights)
+*    Prints number of secret sectors, nukeage sectors, total sectors
+*    Prints number of triggers, total linedefs
+*    Prints presence/absence of reject resource
+*    Fixed multi-player map info (-B4 and -B4M now print differently)
+*    Now has separate columns for each skill level of multi-player
+info
+
+
+2.   Usage Restrictions and Warranty (lack thereof)
+
+WADWHAT is free.  Completely free.  Source is even included, for the
+curious.  (Note that it's even COMMENTED :-)  All I ask is that if you
+use the source for WADWHAT in any other program that you give me
+credit in the documentation.
+
+WADWHAT also comes with no warranty of any kind (hey, you get what you
+pay for).  Use it at your own risk.  May contribute to global warming
+and many other disasters.  If, by some chance, you find a way to melt
+down your computer with WADWHAT, you're on your own.
+
+
+3.   How to Use WADWHAT
+
+It's pretty simple.  Just give it a series of filenames in the current
+directory (wildcards such as *.WAD are ok):
+
+     WADWHAT foo.wad g*.wad doom.wad
+
+WADWHAT will then print the contents of all the WAD files to your
+screen.  Because there's quite a bit of output, you might want to pipe
+the output of WADWHAT to MORE (which comes with MS-DOS).  This will
+pause the output every screenful:
+
+     WADWHAT doom.wad | MORE
+
+
+4.   Output Format - Normal
+
+When run on a WAD file, WADWHAT will produce output similar to the
+following:
+
+E:\GAMES\DOOM\WADS\GOOD>wadwhat sly1.wad
+WADWHAT 1.1 by Randall R. Spangler (rspangle@micro.caltech.edu)
+==============================================================================
+PWAD FILE SLY1.WAD:
+------------------------------------------------------------------------------
+EPISODE 2 MISSION 1             S1    S2    S3   S45 |    M1    M2    M3   M45
+------------------------------------------------------------------------------
+    Play modes:
+        Single player
+        Cooperative (4 player)
+        Deathmatch (8 starts)
+    Bosses:
+        Baron                    3     3     3     3 |     3     3     3     3
+        Cyberdemon               0     0     1     1 |     0     0     1     1
+    Monsters:
+        Trooper                  5     5     8     8 |     5     5     8     8
+        Sergeant                20    20    20    20 |    26    26    26    26
+        Imp                      7     7     7    13 |    14    14    14    20
+        Demon                   12    12    12    12 |    14    14    14    14
+        Spectre                  7     7     7     7 |     9     9     9     9
+        Lost soul               25    25    26    26 |    29    29    30    30
+        Cacodemon                6     6     7     8 |     9     9    10    11
+    Weapons:
+        Shotgun                  3     3     2     2 |     3     3     2     2
+        Chaingun                 3     3     3     3 |     3     3     3     3
+        Rocket launcher          2     2     2     2 |     2     2     2     2
+        Plasma gun               4     4     3     3 |     4     4     3     3
+        BFG-9000                 2     2     2     2 |     2     2     2     2
+        Chainsaw                 1     1     1     1 |     1     1     1     1
+    Equipment:
+        Backpack                 5     5     5     5 |     5     5     5     5
+        Berserk                  2     2     2     2 |     2     2     2     2
+        Invisibility             3     3     3     3 |     3     3     3     3
+        Lite amp goggles         1     1     1     1 |     2     2     2     2
+    Expendibles:
+        Bullets               1870   935   950   950 |  1870   935   950   950
+        Shells                1016   508   480   480 |  1104   552   524   524
+        Rockets                 88    44    44    44 |    98    49    49    49
+        Cells                 1160   580   520   520 |  1160   580   520   520
+        Armor points          1600   800   600   600 |  2800  1400  1200  1200
+        Health points         2118  1059   984   984 |  2738  1369  1344  1344
+        Barrels                 61    61    61    61 |    77    77    77    77
+    Difficulty:
+        Total monster hp      1187  1187  1643  1719 |  1467  1467  1923  1999
+        Max ammo damage      13062  6531  6230  6230 | 13878  6939  6638  6638
+        RATIO                0.091 0.182 0.264 0.276 | 0.106 0.211 0.290 0.301
+    Other info:
+        Average brightness             165 (0=dark, 255=bright)
+        Secrets                          1
+        Nukeage / sectors         2 /  112
+        Triggers / linedefs     134 /  886
+        Reject resource                YES
+
+At the top of the output is the name of the WAD file.  Id has
+requested that all add-on files be PWADs, but you may run across an
+IWAD or two out there.  After that is the information for each map
+(the example file contains only one map).  The columns contain
+
+     *    The type of thing being counted
+     *    The number present at skill level 1 (I'm Too Young to Die)
+     *    The number present at skill level 2 (Hey, Not Too Rough)
+     *    The number present at skill level 3 (Hurt Me Plenty)
+          *    The number present at skill levels 4 and 5 (Ultra-
+          Violence and Nightmare)
+          **** Similar numbers, but for multi-player (cooperative or
+          deathmatch) mode
+
+If a thing does not appear in a map (for example, dork.wad doesn't
+have any Rad Suits) it won't be listed.
+
+Expendibles are calculated differently from the previous sections.
+These are the total amounts of each thing from all possible sources.
+For example, bullets come from clips, the chaingun, boxes of ammo, and
+killed troopers.  Armor comes from the green and blue armors, and the
+helmet armor bonuses.
+
+Skill level 1 (I'm Too Young to Die) is the same as skill level 2
+(Hey, Not Too Rough), except that all damage to the player is halved
+and all ammo amounts are doubled.
+
+A level with a low average brightness (128 or less) will be poorly
+lit; one with a high brightness (220 or more) will be very well lit,
+with only a few dark nooks.  Secret sectors and sectors with nukeage
+(floors which damage you) are counted. Triggers are lines which open
+doors, drop lifts, and so on when you walk over, push, or shoot them.
+The total number of sectors or linedefs is a good gauge of level
+complexity.  The REJECT resource speeds up drawing the level - the
+same level will play more smoothly if this is present.
+
+
+5.   Output Format - Brief
+
+If you're trying to compare a number of WAD files, the full output may
+be a bit unwieldy.  WADWHAT has a brief output mode which prints one
+line per map, assuming a given skill level:
+
+E:\GAMES\DOOM\WADS\GOOD>wadwhat -B4 *.wad
+WADWHAT 1.1 by Randall R. Spangler (rspangle@micro.caltech.edu)
+File         Map   Play  Bosses  Monsters              Weapons  Equip    RATIO
+-------------------c-de--ba-c-s--tr-se-im-de-sp-lo-ca--cpscrpb--bvsiral-------
+ANTHILL.WAD  E1M1  4  1   2 1 0  32 35 33 14  1  0  4  12.4567  B..IRA.  0.227
+BIOTECH.WAD  E1M1  4  0   7 1 0   7  5 38 89  9  1  6  123456.  BV.I..L  1.085
+CIRCLE.WAD   E1M1  4  0   0 0 0   0  0  0  0  0  0  0  123456.  B......  0.000
+DORK.WAD     E1M1  4  0   3 0 0   0 24 56 26  0 38 40  12345..  ...I.AL  0.529
+TREE3.WAD    E1M1  4  0   3 0 0   7 34 53 14  6 13  3  12.45..  ...I..L  0.557
+TREE3.WAD    E1M2  4  0   2 0 0   1 26 51 14  2 11  6  12...6.  B.SI...  0.270
+TREE3.WAD    E1M3  4  0   3 0 0   5 30 61 24  5 15  7  .2345.7  ..SIR..  0.322
+URBNBETA.WAD E1M1  4  1   1 1 1  41  8  0  0  0  7  3  1234567  B.S..AL  0.222
+
+
+The brief output has the following sections:
+
+File           The file containing the map.
+Map            Which map is being replaced.  Some files (TREE3.WAD,
+               for example), contain more than one map.
+Play           Play modes supported.  "c" is the number of cooperative
+               players, and "de" is the number of deathmatch starts.
+Bosses         The number of barons, cyberdemons, and spiderdemons.
+Monsters       The number of troopers, sergeants, imps, demons,
+               spectres, lost souls, and cacodemons.  "++" will be
+               printed if more than 99 of a monster are present.
+Weapons        Which weapons can be found in the level: 1=chainsaw,
+               2=pistol, 3=shotgun, 4=chaingun, 5=rocket launcher,
+               6=plasma gun, 7=BFG-9000.
+Equip          Which equipment is present: B=backpack,
+               V=invulnerability, S=berserk, I=invisibility, R=rad
+               suit, A=computer map (allmap), L=light amp goggles.
+RATIO          The difficulty ratio of the map at the specified skill
+               level.
+
+Some levels add additional items in multi-player mode.  To see the
+brief totals in multiplayer mode, add a 'M' to the end of the -B flag
+(so "-B4M" instead of "-B4").
+
+
+6.   Difficulty RATIO
+
+The difficulty ratio is an attempt to provide some indication of how
+challenging a map is, based on the number of monsters and the amount
+of ammo in the map.  Total monster hp is the damage required to kill
+all the monsters in the map.  Max ammo damage is the amount of damage
+that could be done by using up all the ammo in the map.  This assumes
+that every pellet from a shotgun hits, and rockets always hit
+directly.  The higher the RATIO is, the more difficult the map.
+
+Some numbers from the DOOM episodes:
+
+Average episode 1, "Hurt Me Plenty"               0.177
+Average episode 2, "Hurt Me Plenty"               0.399
+Average episode 3, "Hurt Me Plenty"               0.374
+
+Average "I'm Too Young to Die"                    0.096
+Average "Hey, Not Too Rough"                      0.192
+Average "Hurt Me Plenty"                          0.317
+Average "Ultra-Violence"                          0.448
+
+Easiest map: E1M1, "I'm Too Young to Die"         0.013
+Hardest map in shareware: E1M8, "Ultra-Violence"  0.493
+Hardest required     map: E3M6, "Ultra-Violence"  0.738
+Hardest secret map: E2M9, "Ultra-Violence"        0.915
+
+
+7.   Bugs and Limitations
+
+If -respawn is used, the effective number of monsters in the map will
+increase because they keep coming back to life.
+
+The RATIO ignores damage that may be done by exploding rockets,
+barrels, BFG-9000 blasts, and monsters killing each other.  It also
+doesn't take into account damage done by the chainsaw or fists.  A
+better measure of map difficulty would probably also use the amounts
+of armor and health available (any ideas for how they should be
+counted?)
+
+In multi-player mode, there will be slightly less ammo available
+because each weapon can only be picked up once per life.  However,
+players which die start over with 50 bullets each time and can pick up
+each weapon again, so the net effect is probably small.
+
+
+8.   Information About the Author
+
+You can send comments, money, etc. to me at:
+
+     Snail mail:    Randall R. Spangler
+                    Caltech 116-81
+                    Pasadena, CA 91125
+
+     Internet:      rspangle@micro.caltech.edu
+
+I have also written some inexpensive shareware programs - try them
+out!  (available by anonymous FTP, or e-mail):
+
+   HOWITZER 0.95 (a SuperVGA artillery simulation game, 386 required)
+      ftp to ftp.uml.edu, /msdos/Games/Misc/hwitz095.zip
+   UNIXCORN 1.3 (enhances any shell or DOS Prompt, for Windows 3.1)
+      ftp to oak.oakland.edu, /SimTel/msdos/windows3/unixcn13.zip
+      ftp to winftp.cica.indiana.edu, /pub/pc/win3/util/unixcn13.zip
+
