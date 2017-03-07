@@ -1,18 +1,12 @@
-#
-#	Makefile for Wadspy
-#	AYM 2000-07-20
-#
-
-PREFIX = /usr/local
-CC     = cc
-CFLAGS = -Os -Wno-unused-result
+prefix?=/usr/local
+mandir?=/share/man
+target=$(DESTDIR)$(prefix)
 
 all: wadspy
 
-wadspy: wadspy.c Makefile
-	$(CC) $(CFLAGS) wadspy.c -o wadspy
+clean:
+	rm -f wadspy
 
-install:
-	cp -p wadspy $(PREFIX)/bin
-	[ ! -e $(PREFIX)/share/man ] || cp -p wadspy.6 $(PREFIX)/share/man/man6
-	[ ! -e $(PREFIX)/man       ] || cp -p wadspy.6 $(PREFIX)/man/man6
+install: wadspy
+	install -Dm 755 wadspy "$(target)/bin/wadspy"
+	install -Dm 644 wadspy.6 "$(target)$(mandir)/wadspy.6"
