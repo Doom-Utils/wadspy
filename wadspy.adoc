@@ -1,0 +1,49 @@
+wadspy(6)
+=========
+:doctype: manpage
+
+
+NAME
+----
+wadspy - estimate difficulty of Doom levels
+
+SYNOPSIS
+--------
+*wadspy* [*-b*'skill'] [*-m* 'level'] 'file' ...
+
+DESCRIPTION
+-----------
+Wadspy prints statistics about the difficulty of the levels in one or
+more wads.
+
+OPTIONS
+-------
+*-b*'skill'::
+    Print brief output for skill level 's'.  's' can be one of "*1*",
+    "*2*", "*3*", "*4*", "*5*", "*1m*", "*2m*", "*3m*", "*4m*", "*5m*"
+    (case insensitive).  The first five skill levels are for single
+    player mode, the next five for multi-player mode.
+
+*-m* 'level'::
+    Print output for level 'level' only.  'level' should be either
+    *E[0-9]M[0-9]* or *MAP[0-9][0-9]* (case insensitive).  Otherwise,
+    WadSpy aborts with a non-zero exit code.
+
+EXIT VALUE
+----------
+*0*:: OK.
+*>0*:: Error.
+
+BUGS
+----
+Does not work on big endian systems.
+
+AUTHOR
+------
+Oliver Brakmann <obrakmann@gmx.net>.  Unix port and stuff by André
+Majorél <amajorel@teaser.fr>.
+
+WadSpy is copyright © Oliver Brakmann 2000 and available under the
+terms of the GNU General Public License, version 2.
+
+WadSpy is derived from WadWhat by Randall R. Spangler.
